@@ -1,8 +1,8 @@
 <a name="index">**Index**</a>  
 &emsp;<a href="#0">安装docker</a>  
 &emsp;&emsp;<a href="#1">docker Linux通用安装</a>  
-<a href="#2">Add the package repositories</a>  
-&emsp;&emsp;<a href="#3">检验GPU是否可以使用</a>  
+&emsp;&emsp;<a href="#2">检验GPU是否可以使用</a>  
+&emsp;&emsp;<a href="#3"> Docker的启动与停止</a>  
 &emsp;<a href="#4">docker 架构</a>  
 &emsp;<a href="#5">基本操作</a>  
 &emsp;&emsp;<a href="#6">配置阿里云镜像加速</a>  
@@ -27,14 +27,17 @@
 &emsp;&emsp;<a href="#25">构建镜像</a>  
 &emsp;&emsp;<a href="#26">查看镜像变更历史</a>  
 &emsp;&emsp;<a href="#27">CMD 和 ENTRYPOINT 的区别</a>  
-&emsp;<a href="#28">[多容器通信](https://docker.easydoc.net/doc/81170005/cCewZWoN/U7u8rjzF)</a>  
-&emsp;<a href="#29">镜像托管发布</a>  
-&emsp;&emsp;<a href="#30">[Docker hub](https://hub.docker.com/)</a>  
-&emsp;&emsp;<a href="#31">阿里云托管</a>  
-&emsp;<a href="#32">备份和迁移数据</a>  
-&emsp;&emsp;<a href="#33">备份和导入 Volume 的流程</a>  
-&emsp;&emsp;<a href="#34">备份 MongoDB 数据演示</a>  
-&emsp;&emsp;<a href="#35">恢复 Volume 数据演示</a>  
+&emsp;<a href="#28">Docker使用宿主机的网络</a>  
+&emsp;<a href="#29">查看日志</a>  
+&emsp;<a href="#30">持续运行的程序，挂了自动重启</a>  
+&emsp;<a href="#31">[多容器通信](https://docker.easydoc.net/doc/81170005/cCewZWoN/U7u8rjzF)</a>  
+&emsp;<a href="#32">镜像托管发布</a>  
+&emsp;&emsp;<a href="#33">[Docker hub](https://hub.docker.com/)</a>  
+&emsp;&emsp;<a href="#34">阿里云托管</a>  
+&emsp;<a href="#35">备份和迁移数据</a>  
+&emsp;&emsp;<a href="#36">备份和导入 Volume 的流程</a>  
+&emsp;&emsp;<a href="#37">备份 MongoDB 数据演示</a>  
+&emsp;&emsp;<a href="#38">恢复 Volume 数据演示</a>  
 ## <a name="0">安装docker</a><a style="float:right;text-decoration:none;" href="#index">[Top]</a>
 
 [docker阿里安装教程(推荐)](https://developer.aliyun.com/article/656764?spm=5176.21213303.J_6704733920.38.5c663eda6xi9D8&scm=20140722.S_community%40%40%E6%96%87%E7%AB%A0%40%40656764._.ID_community%40%40%E6%96%87%E7%AB%A0%40%40656764-RL_docker-LOC_main-OR_ser-V_2-P0_11)
@@ -52,13 +55,12 @@ sudo curl -sS https://get.docker.com/ | sh
 测试安装是否成功。
 
 ```bash
-$ docker run hello-world
+docker run hello-world
 ```
 
 **如果机器有支持深度学习的GPU，新版docker可安装 Nvidia 对 docker 的软件支持[目前仅支持linux]：**
 
 ```bash
-# <a name="2">Add the package repositories</a><a style="float:right;text-decoration:none;" href="#index">[Top]</a>
 distribution=$(. /etc/os-release;echo $ID$VERSION_ID)
 curl -s -L https://nvidia.github.io/nvidia-docker/gpgkey | sudo apt-key add -
 curl -s -L https://nvidia.github.io/nvidia-docker/$distribution/nvidia-docker.list | sudo tee /etc/apt/sources.list.d/nvidia-docker.list
@@ -72,11 +74,30 @@ sudo systemctl restart docker
 
 注意：以前是安装nvidia-container-toolkit，现在官方又回退到sudo apt-get install -y nvidia-docker2
 
-### <a name="3">检验GPU是否可以使用</a><a style="float:right;text-decoration:none;" href="#index">[Top]</a>
+### <a name="2">检验GPU是否可以使用</a><a style="float:right;text-decoration:none;" href="#index">[Top]</a>
 
 `docker run --gpus all --it nvidia/cuda:10.2-cudnn8-runtime-ubuntu18.04`
 
 --gpus all 则是使用所有 gpu。
+
+### <a name="3"> Docker的启动与停止</a><a style="float:right;text-decoration:none;" href="#index">[Top]</a>
+systemctl命令是系统服务管理器指令
+
+```bash
+systemctl start docker # 启动docker
+
+systemctl stop docker # 停止docker
+
+systemctl restart docker # 重启docker
+
+systemctl status docker # 查看docker状态
+
+systemctl enable docker # 开机启动
+
+docker info # 查看docker概要信息
+
+docker --help # 查看docker帮助文档
+```
 
 ## <a name="4">docker 架构</a><a style="float:right;text-decoration:none;" href="#index">[Top]</a>
 
@@ -344,11 +365,25 @@ ONBUILD # 当构建一个被继承的DockerFile时运行命令，父镜像在被
 
 **ENTRYPOINT**： docker run 之后的参数会被当做参数传递给 ENTRYPOINT，之后合并形成新的命令组合！
 
-## <a name="28">[多容器通信](https://docker.easydoc.net/doc/81170005/cCewZWoN/U7u8rjzF)</a><a style="float:right;text-decoration:none;" href="#index">[Top]</a>
+## <a name="28">Docker使用宿主机的网络</a><a style="float:right;text-decoration:none;" href="#index">[Top]</a>
 
-## <a name="29">镜像托管发布</a><a style="float:right;text-decoration:none;" href="#index">[Top]</a>
+`docker run --name 任意名字 --network host -it 镜像名:版本号`
 
-### <a name="30">[Docker hub](https://hub.docker.com/)</a><a style="float:right;text-decoration:none;" href="#index">[Top]</a>
+## <a name="29">查看日志</a><a style="float:right;text-decoration:none;" href="#index">[Top]</a>
+
+`docker logs -f 容器名`
+
+`docker logs --tail 10 容器名`
+
+## <a name="30">持续运行的程序，挂了自动重启</a><a style="float:right;text-decoration:none;" href="#index">[Top]</a>
+
+`docker run --name 任意名字 --network host --restart unless-stopped -it 镜像名:版本号`
+
+## <a name="31">[多容器通信](https://docker.easydoc.net/doc/81170005/cCewZWoN/U7u8rjzF)</a><a style="float:right;text-decoration:none;" href="#index">[Top]</a>
+
+## <a name="32">镜像托管发布</a><a style="float:right;text-decoration:none;" href="#index">[Top]</a>
+
+### <a name="33">[Docker hub](https://hub.docker.com/)</a><a style="float:right;text-decoration:none;" href="#index">[Top]</a>
 
 - 首先你要先 [注册一个账号](https://hub.docker.com/)
 
@@ -363,16 +398,16 @@ ONBUILD # 当构建一个被继承的DockerFile时运行命令，父镜像在被
 - 推上去
   `docker push username/image_name:tag`
 
-### <a name="31">阿里云托管</a><a style="float:right;text-decoration:none;" href="#index">[Top]</a>
+### <a name="34">阿里云托管</a><a style="float:right;text-decoration:none;" href="#index">[Top]</a>
 
 - [阿里云镜像服务](https://cr.console.aliyun.com/cn-beijing/instance/dashboard)
 - 创建个人实例，并且进入，创建命名空间，创建镜像仓库
 
-## <a name="32">备份和迁移数据</a><a style="float:right;text-decoration:none;" href="#index">[Top]</a>
+## <a name="35">备份和迁移数据</a><a style="float:right;text-decoration:none;" href="#index">[Top]</a>
 
 如果你是用`bind mount`直接把宿主机的目录挂进去容器，那迁移数据很方便，直接复制目录就好了。如果你是用`volume`方式挂载的，由于数据是由容器创建和管理的，需要用特殊的方式把数据弄出来。
 
-### <a name="33">备份和导入 Volume 的流程</a><a style="float:right;text-decoration:none;" href="#index">[Top]</a>
+### <a name="36">备份和导入 Volume 的流程</a><a style="float:right;text-decoration:none;" href="#index">[Top]</a>
 
 备份：
 
@@ -385,7 +420,7 @@ ONBUILD # 当构建一个被继承的DockerFile时运行命令，父镜像在被
 - 运行 ubuntu 容器，挂载容器的 volume，并且挂载宿主机备份文件所在目录到容器里
 - 运行 tar 命令解压备份文件到指定目录
 
-### <a name="34">备份 MongoDB 数据演示</a><a style="float:right;text-decoration:none;" href="#index">[Top]</a>
+### <a name="37">备份 MongoDB 数据演示</a><a style="float:right;text-decoration:none;" href="#index">[Top]</a>
 
 - 运行一个 mongodb，创建一个名叫`mongo-data`的 volume 指向容器的 /data 目录
   `docker run -p 27018:27017 --name mongo -v mongo-data:/data -d mongo:4.4`
@@ -394,7 +429,7 @@ ONBUILD # 当构建一个被继承的DockerFile时运行命令，父镜像在被
 
 最后你就可以拿着这个 backup.tar 文件去其他地方导入了。
 
-### <a name="35">恢复 Volume 数据演示</a><a style="float:right;text-decoration:none;" href="#index">[Top]</a>
+### <a name="38">恢复 Volume 数据演示</a><a style="float:right;text-decoration:none;" href="#index">[Top]</a>
 
 - 运行一个 ubuntu 容器，挂载 mongo 容器的所有 volumes，然后读取 /backup 目录中的备份文件，解压到 /data/ 目录
   `docker run --rm --volumes-from mongo -v d:/backup:/backup ubuntu bash -c "cd /data/ && tar xvf /backup/backup.tar --strip 1"`

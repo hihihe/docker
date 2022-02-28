@@ -21,7 +21,6 @@ docker run hello-world
 **如果机器有支持深度学习的GPU，新版docker可安装 Nvidia 对 docker 的软件支持[目前仅支持linux]：**
 
 ```bash
-# Add the package repositories
 distribution=$(. /etc/os-release;echo $ID$VERSION_ID)
 curl -s -L https://nvidia.github.io/nvidia-docker/gpgkey | sudo apt-key add -
 curl -s -L https://nvidia.github.io/nvidia-docker/$distribution/nvidia-docker.list | sudo tee /etc/apt/sources.list.d/nvidia-docker.list
@@ -45,29 +44,20 @@ sudo systemctl restart docker
 systemctl命令是系统服务管理器指令
 
 ```bash
-# 启动docker
-systemctl start docker
+systemctl start docker # 启动docker
 
-# 停止docker
-systemctl stop docker
+systemctl stop docker # 停止docker
 
-# 重启docker
-systemctl restart docker
+systemctl restart docker # 重启docker
 
-# 查看docker状态
-systemctl status docker
+systemctl status docker # 查看docker状态
 
-# 开机启动
-systemctl enable docker
+systemctl enable docker # 开机启动
 
-# 查看docker概要信息
-docker info
+docker info # 查看docker概要信息
 
-# 查看docker帮助文档
-docker --help
+docker --help # 查看docker帮助文档
 ```
-
-
 
 ## docker 架构
 
