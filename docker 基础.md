@@ -15,7 +15,7 @@ sudo curl -sS https://get.docker.com/ | sh
 测试安装是否成功。
 
 ```bash
-$ docker run hello-world
+docker run hello-world
 ```
 
 **如果机器有支持深度学习的GPU，新版docker可安装 Nvidia 对 docker 的软件支持[目前仅支持linux]：**
@@ -40,6 +40,34 @@ sudo systemctl restart docker
 `docker run --gpus all --it nvidia/cuda:10.2-cudnn8-runtime-ubuntu18.04`
 
 --gpus all 则是使用所有 gpu。
+
+###  Docker的启动与停止
+systemctl命令是系统服务管理器指令
+
+```bash
+# 启动docker
+systemctl start docker
+
+# 停止docker
+systemctl stop docker
+
+# 重启docker
+systemctl restart docker
+
+# 查看docker状态
+systemctl status docker
+
+# 开机启动
+systemctl enable docker
+
+# 查看docker概要信息
+docker info
+
+# 查看docker帮助文档
+docker --help
+```
+
+
 
 ## docker 架构
 
@@ -306,6 +334,20 @@ ONBUILD # 当构建一个被继承的DockerFile时运行命令，父镜像在被
 替换！
 
 **ENTRYPOINT**： docker run 之后的参数会被当做参数传递给 ENTRYPOINT，之后合并形成新的命令组合！
+
+## Docker使用宿主机的网络
+
+`docker run --name 任意名字 --network host -it 镜像名:版本号`
+
+## 查看日志
+
+`docker logs -f 容器名`
+
+`docker logs --tail 10 容器名`
+
+## 持续运行的程序，挂了自动重启
+
+`docker run --name 任意名字 --network host --restart unless-stopped -it 镜像名:版本号`
 
 ## [多容器通信](https://docker.easydoc.net/doc/81170005/cCewZWoN/U7u8rjzF)
 
