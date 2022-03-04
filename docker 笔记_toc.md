@@ -14,34 +14,33 @@
 &emsp;&emsp;&emsp;<a href="#12">退出容器</a>  
 &emsp;&emsp;&emsp;<a href="#13">启动停止容器</a>  
 &emsp;&emsp;&emsp;<a href="#14">查看容器</a>  
-&emsp;&emsp;&emsp;<a href="#15">查看容器终端输出</a>  
-&emsp;&emsp;&emsp;<a href="#16">查看容器/镜像的元数据</a>  
-&emsp;&emsp;&emsp;<a href="#17">查看容器内部进程</a>  
-&emsp;&emsp;&emsp;<a href="#18">进入正在运行的容器</a>  
-&emsp;&emsp;&emsp;<a href="#19">从容器内拷贝文件到主机上</a>  
-&emsp;&emsp;&emsp;<a href="#20">从容器创建镜像</a>  
-&emsp;&emsp;&emsp;<a href="#21">删除容器</a>  
-&emsp;<a href="#22">容器数据卷</a>  
-&emsp;&emsp;<a href="#23">几种挂载方式</a>  
-&emsp;&emsp;<a href="#24">容器之间同步数据</a>  
-&emsp;<a href="#25">[DockerFile](https://docs.docker.com/engine/reference/builder/#run)</a>  
-&emsp;&emsp;<a href="#26">构建镜像</a>  
-&emsp;&emsp;<a href="#27">查看镜像变更历史</a>  
-&emsp;&emsp;<a href="#28">CMD 和 ENTRYPOINT 的区别</a>  
-&emsp;<a href="#29">Docker使用宿主机的网络</a>  
-&emsp;<a href="#30">查看日志</a>  
-&emsp;<a href="#31">持续运行的程序，挂了自动重启</a>  
-&emsp;<a href="#32">[多容器通信](https://docker.easydoc.net/doc/81170005/cCewZWoN/U7u8rjzF)</a>  
-&emsp;<a href="#33">镜像托管发布</a>  
-&emsp;&emsp;<a href="#34">[Docker hub](https://hub.docker.com/)</a>  
-&emsp;&emsp;<a href="#35">阿里云托管</a>  
-&emsp;<a href="#36">备份和迁移数据</a>  
-&emsp;&emsp;<a href="#37">备份和导入 Volume 的流程</a>  
-&emsp;&emsp;<a href="#38">备份 MongoDB 数据演示</a>  
-&emsp;&emsp;<a href="#39">恢复 Volume 数据演示</a>  
+&emsp;&emsp;&emsp;<a href="#15">查看容器日志</a>  
+&emsp;&emsp;&emsp;<a href="#16">持续运行的容器，挂了自动重启</a>  
+&emsp;&emsp;&emsp;<a href="#17">查看容器/镜像的元数据</a>  
+&emsp;&emsp;&emsp;<a href="#18">查看容器内部进程</a>  
+&emsp;&emsp;&emsp;<a href="#19">进入正在运行的容器</a>  
+&emsp;&emsp;&emsp;<a href="#20">从容器内拷贝文件到主机上</a>  
+&emsp;&emsp;&emsp;<a href="#21">从容器创建镜像</a>  
+&emsp;&emsp;&emsp;<a href="#22">删除容器</a>  
+&emsp;<a href="#23">容器数据卷</a>  
+&emsp;&emsp;<a href="#24">几种挂载方式</a>  
+&emsp;&emsp;<a href="#25">容器之间同步数据</a>  
+&emsp;<a href="#26">[DockerFile](https://docs.docker.com/engine/reference/builder/#run)</a>  
+&emsp;&emsp;<a href="#27">构建镜像</a>  
+&emsp;&emsp;<a href="#28">查看镜像变更历史</a>  
+&emsp;&emsp;<a href="#29">CMD 和 ENTRYPOINT 的区别</a>  
+&emsp;<a href="#30">Docker使用宿主机的网络</a>  
+&emsp;<a href="#31">[多容器通信](https://docker.easydoc.net/doc/81170005/cCewZWoN/U7u8rjzF)</a>  
+&emsp;<a href="#32">镜像托管发布</a>  
+&emsp;&emsp;<a href="#33">[Docker hub](https://hub.docker.com/)</a>  
+&emsp;&emsp;<a href="#34">阿里云托管</a>  
+&emsp;<a href="#35">备份和迁移数据</a>  
+&emsp;&emsp;<a href="#36">备份和导入 Volume 的流程</a>  
+&emsp;&emsp;<a href="#37">备份 MongoDB 数据演示</a>  
+&emsp;&emsp;<a href="#38">恢复 Volume 数据演示</a>  
 ## <a name="0">安装docker</a><a style="float:right;text-decoration:none;" href="#index">[Top]</a>
 
-版本号别用latest，别用latest，别用latest。会埋坑。。。
+**版本号别用latest，别用latest，别用latest。会埋坑。。。**
 
 [docker阿里安装教程](https://developer.aliyun.com/article/656764)
 
@@ -84,7 +83,7 @@ sudo systemctl restart docker
 --gpus all 则是使用所有 gpu。
 
 ### <a name="3"> Docker的启动与停止</a><a style="float:right;text-decoration:none;" href="#index">[Top]</a>
-systemctl命令是系统服务管理器指令
+systemctl命令是系统服务管理器指令，非root用户加sudo使用
 
 ```bash
 systemctl start docker # 启动docker
@@ -137,7 +136,7 @@ docker --help # 查看docker帮助文档
 
 2、进入管理控制台设置密码，开通
 
-3、进入阿里云容器镜像服务，找到镜像加速器。可以看到配置镜像加速的方法。
+3、进入阿里云容器镜像服务，找到镜像加速器。可以看到配置镜像加速的方法
 
 #### <a name="7">windows系统配置镜像加速</a><a style="float:right;text-decoration:none;" href="#index">[Top]</a>
 
@@ -243,23 +242,31 @@ docker COMMAND --help # 帮助
 
 `docker ps` 列出运行中的容器
 
+`docker ps -f name=neo4j` 查看指定的容器
+
 `docker ps -a` 列出所有容器
 
-`docker stats 容器id` 查看容器的cpu内存和网络状态
+`docker stats 容器id` 查看容器的**cpu内存和网络**状态
 
-#### <a name="15">查看容器终端输出</a><a style="float:right;text-decoration:none;" href="#index">[Top]</a>
+#### <a name="15">查看容器日志</a><a style="float:right;text-decoration:none;" href="#index">[Top]</a>
 
-`docker logs -tf --tail 10 容器id`  查看最后10条的终端输出
+`docker logs --tail 10 容器名` 查看最后10条日志
 
-#### <a name="16">查看容器/镜像的元数据</a><a style="float:right;text-decoration:none;" href="#index">[Top]</a>
+`docker logs -tf --tail 10 容器id`  查看最后10条日志，并持续跟踪日志变化
+
+#### <a name="16">持续运行的容器，挂了自动重启</a><a style="float:right;text-decoration:none;" href="#index">[Top]</a>
+
+`docker run --name 任意名字 --network host --restart always -it 镜像名:版本号`
+
+#### <a name="17">查看容器/镜像的元数据</a><a style="float:right;text-decoration:none;" href="#index">[Top]</a>
 
 `docker inspect 容器id /镜像id`
 
-#### <a name="17">查看容器内部进程</a><a style="float:right;text-decoration:none;" href="#index">[Top]</a>
+#### <a name="18">查看容器内部进程</a><a style="float:right;text-decoration:none;" href="#index">[Top]</a>
 
 `docker top 容器id` 
 
-#### <a name="18">进入正在运行的容器</a><a style="float:right;text-decoration:none;" href="#index">[Top]</a>
+#### <a name="19">进入正在运行的容器</a><a style="float:right;text-decoration:none;" href="#index">[Top]</a>
 
 `docker exec -it 容器id /bin/bash` 
 
@@ -269,11 +276,11 @@ docker COMMAND --help # 帮助
 >
 > attach 直接进入容器启动命令的终端，不会启动新的进程 
 
-#### <a name="19">从容器内拷贝文件到主机上</a><a style="float:right;text-decoration:none;" href="#index">[Top]</a>
+#### <a name="20">从容器内拷贝文件到主机上</a><a style="float:right;text-decoration:none;" href="#index">[Top]</a>
 
 `docker cp 容器id:容器内路径 目的主机路径` 
 
-#### <a name="20">从容器创建镜像</a><a style="float:right;text-decoration:none;" href="#index">[Top]</a>
+#### <a name="21">从容器创建镜像</a><a style="float:right;text-decoration:none;" href="#index">[Top]</a>
 
 `docker commit -m="提交的描述信息" -a="作者" 容器id 要创建的目标镜像名:[标签名]` 
 
@@ -281,19 +288,19 @@ docker COMMAND --help # 帮助
 >
 > 建议 commit 仅作为保留现场的手段，然后通过修改 dockerfile 构建镜像。
 
-#### <a name="21">删除容器</a><a style="float:right;text-decoration:none;" href="#index">[Top]</a>
+#### <a name="22">删除容器</a><a style="float:right;text-decoration:none;" href="#index">[Top]</a>
 
 `docker rm 容器id` 删除指定容器，使用`-f`参数强制删除
 
  `docker ps -a -q|xargs docker rm` 删除全部不在运行的容器，末尾使用`-f`参数强制删除全部容器
 
-## <a name="22">容器数据卷</a><a style="float:right;text-decoration:none;" href="#index">[Top]</a>
+## <a name="23">容器数据卷</a><a style="float:right;text-decoration:none;" href="#index">[Top]</a>
 
 查看数据卷是否挂载成功 `docker inspect 容器id` ，查看Mounts的配置数据。
 
 ![image-20220107093620029](https://chushi123.oss-cn-beijing.aliyuncs.com/img/202201070936103.png)
 
-### <a name="23">几种挂载方式</a><a style="float:right;text-decoration:none;" href="#index">[Top]</a>
+### <a name="24">几种挂载方式</a><a style="float:right;text-decoration:none;" href="#index">[Top]</a>
 
 - `bind mount` 直接把宿主机目录映射到容器内，适合挂代码目录和配置文件。可挂到多个容器上
 
@@ -307,7 +314,7 @@ docker COMMAND --help # 帮助
 
 - `tmpfs mount` 适合存储临时文件，存宿主机内存中。不可多容器共享。
 
-### <a name="24">容器之间同步数据</a><a style="float:right;text-decoration:none;" href="#index">[Top]</a>
+### <a name="25">容器之间同步数据</a><a style="float:right;text-decoration:none;" href="#index">[Top]</a>
 
 `docker run -it --name docker02 --volumes-from docker01 centos`  通过centos:latest镜像创建docker02容器，容器docker02使用和容器docker01相同的数据卷。
 
@@ -327,7 +334,7 @@ docker COMMAND --help # 帮助
 
 **存储在本机的文件则会一直保留！**
 
-## <a name="25">[DockerFile](https://docs.docker.com/engine/reference/builder/#run)</a><a style="float:right;text-decoration:none;" href="#index">[Top]</a>
+## <a name="26">[DockerFile](https://docs.docker.com/engine/reference/builder/#run)</a><a style="float:right;text-decoration:none;" href="#index">[Top]</a>
 
 **基础知识：**
 
@@ -358,7 +365,7 @@ ONBUILD # 当构建一个被继承的DockerFile时运行命令，父镜像在被
 
 ![image-20220107094452970](https://chushi123.oss-cn-beijing.aliyuncs.com/img/202201070944065.png)
 
-### <a name="26">构建镜像</a><a style="float:right;text-decoration:none;" href="#index">[Top]</a>
+### <a name="27">构建镜像</a><a style="float:right;text-decoration:none;" href="#index">[Top]</a>
 
 `docker build -f dockerfile地址 -t 新镜像名字:TAG .`
 
@@ -366,11 +373,11 @@ ONBUILD # 当构建一个被继承的DockerFile时运行命令，父镜像在被
 
 如果dockerfile文件名为Dockerfile且在当前目录，则可以省略`-f dockerfile地址`
 
-### <a name="27">查看镜像变更历史</a><a style="float:right;text-decoration:none;" href="#index">[Top]</a>
+### <a name="28">查看镜像变更历史</a><a style="float:right;text-decoration:none;" href="#index">[Top]</a>
 
 `docker history 镜像名`
 
-### <a name="28">CMD 和 ENTRYPOINT 的区别</a><a style="float:right;text-decoration:none;" href="#index">[Top]</a>
+### <a name="29">CMD 和 ENTRYPOINT 的区别</a><a style="float:right;text-decoration:none;" href="#index">[Top]</a>
 
 **CMD**：Dockerfifile 中可以有多个CMD 指令，但只有最后一个生效，CMD 会被 docker run 之后的参数
 
@@ -378,25 +385,15 @@ ONBUILD # 当构建一个被继承的DockerFile时运行命令，父镜像在被
 
 **ENTRYPOINT**： docker run 之后的参数会被当做参数传递给 ENTRYPOINT，之后合并形成新的命令组合！
 
-## <a name="29">Docker使用宿主机的网络</a><a style="float:right;text-decoration:none;" href="#index">[Top]</a>
+## <a name="30">Docker使用宿主机的网络</a><a style="float:right;text-decoration:none;" href="#index">[Top]</a>
 
 `docker run --name 任意名字 --network host -it 镜像名:版本号`
 
-## <a name="30">查看日志</a><a style="float:right;text-decoration:none;" href="#index">[Top]</a>
+## <a name="31">[多容器通信](https://docker.easydoc.net/doc/81170005/cCewZWoN/U7u8rjzF)</a><a style="float:right;text-decoration:none;" href="#index">[Top]</a>
 
-`docker logs -f 容器名`
+## <a name="32">镜像托管发布</a><a style="float:right;text-decoration:none;" href="#index">[Top]</a>
 
-`docker logs --tail 10 容器名`
-
-## <a name="31">持续运行的程序，挂了自动重启</a><a style="float:right;text-decoration:none;" href="#index">[Top]</a>
-
-`docker run --name 任意名字 --network host --restart unless-stopped -it 镜像名:版本号`
-
-## <a name="32">[多容器通信](https://docker.easydoc.net/doc/81170005/cCewZWoN/U7u8rjzF)</a><a style="float:right;text-decoration:none;" href="#index">[Top]</a>
-
-## <a name="33">镜像托管发布</a><a style="float:right;text-decoration:none;" href="#index">[Top]</a>
-
-### <a name="34">[Docker hub](https://hub.docker.com/)</a><a style="float:right;text-decoration:none;" href="#index">[Top]</a>
+### <a name="33">[Docker hub](https://hub.docker.com/)</a><a style="float:right;text-decoration:none;" href="#index">[Top]</a>
 
 - 首先你要先 [注册一个账号](https://hub.docker.com/)
 
@@ -411,16 +408,16 @@ ONBUILD # 当构建一个被继承的DockerFile时运行命令，父镜像在被
 - 推上去
   `docker push username/image_name:tag`
 
-### <a name="35">阿里云托管</a><a style="float:right;text-decoration:none;" href="#index">[Top]</a>
+### <a name="34">阿里云托管</a><a style="float:right;text-decoration:none;" href="#index">[Top]</a>
 
 - [阿里云镜像服务](https://cr.console.aliyun.com/cn-beijing/instance/dashboard)
 - 创建个人实例，并且进入，创建命名空间，创建镜像仓库
 
-## <a name="36">备份和迁移数据</a><a style="float:right;text-decoration:none;" href="#index">[Top]</a>
+## <a name="35">备份和迁移数据</a><a style="float:right;text-decoration:none;" href="#index">[Top]</a>
 
 如果你是用`bind mount`直接把宿主机的目录挂进去容器，那迁移数据很方便，直接复制目录就好了。如果你是用`volume`方式挂载的，由于数据是由容器创建和管理的，需要用特殊的方式把数据弄出来。
 
-### <a name="37">备份和导入 Volume 的流程</a><a style="float:right;text-decoration:none;" href="#index">[Top]</a>
+### <a name="36">备份和导入 Volume 的流程</a><a style="float:right;text-decoration:none;" href="#index">[Top]</a>
 
 备份：
 
@@ -433,7 +430,7 @@ ONBUILD # 当构建一个被继承的DockerFile时运行命令，父镜像在被
 - 运行 ubuntu 容器，挂载容器的 volume，并且挂载宿主机备份文件所在目录到容器里
 - 运行 tar 命令解压备份文件到指定目录
 
-### <a name="38">备份 MongoDB 数据演示</a><a style="float:right;text-decoration:none;" href="#index">[Top]</a>
+### <a name="37">备份 MongoDB 数据演示</a><a style="float:right;text-decoration:none;" href="#index">[Top]</a>
 
 - 运行一个 mongodb，创建一个名叫`mongo-data`的 volume 指向容器的 /data 目录
   `docker run -p 27018:27017 --name mongo -v mongo-data:/data -d mongo:4.4`
@@ -442,7 +439,7 @@ ONBUILD # 当构建一个被继承的DockerFile时运行命令，父镜像在被
 
 最后你就可以拿着这个 backup.tar 文件去其他地方导入了。
 
-### <a name="39">恢复 Volume 数据演示</a><a style="float:right;text-decoration:none;" href="#index">[Top]</a>
+### <a name="38">恢复 Volume 数据演示</a><a style="float:right;text-decoration:none;" href="#index">[Top]</a>
 
 - 运行一个 ubuntu 容器，挂载 mongo 容器的所有 volumes，然后读取 /backup 目录中的备份文件，解压到 /data/ 目录
   `docker run --rm --volumes-from mongo -v d:/backup:/backup ubuntu bash -c "cd /data/ && tar xvf /backup/backup.tar --strip 1"`

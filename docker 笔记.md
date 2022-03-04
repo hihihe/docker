@@ -1,6 +1,6 @@
 ## 安装docker
 
-版本号别用latest，别用latest，别用latest。会埋坑。。。
+**版本号别用latest，别用latest，别用latest。会埋坑。。。**
 
 [docker阿里安装教程](https://developer.aliyun.com/article/656764)
 
@@ -43,7 +43,7 @@ sudo systemctl restart docker
 --gpus all 则是使用所有 gpu。
 
 ###  Docker的启动与停止
-systemctl命令是系统服务管理器指令
+systemctl命令是系统服务管理器指令，非root用户加sudo使用
 
 ```bash
 systemctl start docker # 启动docker
@@ -96,7 +96,7 @@ docker --help # 查看docker帮助文档
 
 2、进入管理控制台设置密码，开通
 
-3、进入阿里云容器镜像服务，找到镜像加速器。可以看到配置镜像加速的方法。
+3、进入阿里云容器镜像服务，找到镜像加速器。可以看到配置镜像加速的方法
 
 #### windows系统配置镜像加速
 
@@ -202,13 +202,21 @@ docker COMMAND --help # 帮助
 
 `docker ps` 列出运行中的容器
 
+`docker ps -f name=neo4j` 查看指定的容器
+
 `docker ps -a` 列出所有容器
 
-`docker stats 容器id` 查看容器的cpu内存和网络状态
+`docker stats 容器id` 查看容器的**cpu内存和网络**状态
 
-#### 查看容器终端输出
+#### 查看容器日志
 
-`docker logs -tf --tail 10 容器id`  查看最后10条的终端输出
+`docker logs --tail 10 容器名` 查看最后10条日志
+
+`docker logs -tf --tail 10 容器id`  查看最后10条日志，并持续跟踪日志变化
+
+#### 持续运行的容器，挂了自动重启
+
+`docker run --name 任意名字 --network host --restart always -it 镜像名:版本号`
 
 #### 查看容器/镜像的元数据
 
@@ -340,16 +348,6 @@ ONBUILD # 当构建一个被继承的DockerFile时运行命令，父镜像在被
 ## Docker使用宿主机的网络
 
 `docker run --name 任意名字 --network host -it 镜像名:版本号`
-
-## 查看日志
-
-`docker logs -f 容器名`
-
-`docker logs --tail 10 容器名`
-
-## 持续运行的程序，挂了自动重启
-
-`docker run --name 任意名字 --network host --restart unless-stopped -it 镜像名:版本号`
 
 ## [多容器通信](https://docker.easydoc.net/doc/81170005/cCewZWoN/U7u8rjzF)
 
