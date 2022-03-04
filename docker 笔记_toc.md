@@ -41,6 +41,8 @@
 &emsp;&emsp;<a href="#39">恢复 Volume 数据演示</a>  
 ## <a name="0">安装docker</a><a style="float:right;text-decoration:none;" href="#index">[Top]</a>
 
+版本号别用latest，别用latest，别用latest。会埋坑。。。
+
 [docker阿里安装教程](https://developer.aliyun.com/article/656764)
 
 [docker hub](https://hub.docker.com/)  [docker docs](https://docs.docker.com/)  [docker安装](https://docs.docker.com/engine/install/centos/)
