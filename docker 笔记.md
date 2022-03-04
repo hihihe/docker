@@ -1,8 +1,8 @@
 ## 安装docker
 
-[docker阿里安装教程(推荐)](https://developer.aliyun.com/article/656764?spm=5176.21213303.J_6704733920.38.5c663eda6xi9D8&scm=20140722.S_community%40%40%E6%96%87%E7%AB%A0%40%40656764._.ID_community%40%40%E6%96%87%E7%AB%A0%40%40656764-RL_docker-LOC_main-OR_ser-V_2-P0_11)
+[docker阿里安装教程](https://developer.aliyun.com/article/656764)
 
-[docker hub](https://hub.docker.com/)  [docker docs](https://docs.docker.com/)  [docker安装](https://docs.docker.com/engine/install/centos/)  [非root账户使用docker](https://www.yuque.com/docs/share/cd3e9e42-3f49-402c-a24c-d102e9f89551?# 《ubuntu系统简单配置》)  [视频教程推荐](https://www.bilibili.com/video/BV1og4y1q7M4?spm_id_from=333.1007.top_right_bar_window_custom_collection.content.click)
+[docker hub](https://hub.docker.com/)  [docker docs](https://docs.docker.com/)  [docker安装](https://docs.docker.com/engine/install/centos/)
 
 ![image-20220106113139350](https://chushi123.oss-cn-beijing.aliyuncs.com/img/202201111613089.png)
 
@@ -75,7 +75,7 @@ docker --help # 查看docker帮助文档
 
 > 通过image创建
 >
-> ==在image 的最后一层上面再添加一层，这一层比较特殊，可读写。==
+> **在image 的最后一层上面再添加一层，这一层比较特殊，可读写。**
 >
 > image负责存储和分发，container负责运行
 
@@ -83,7 +83,7 @@ docker --help # 查看docker帮助文档
 
 > 仓库（Repository）是集中存放镜像文件的场所。 
 >
-> 仓库(Repository)和仓库注册服务器（Registry）是有区别的。仓库注册服务器上往往存放着多个仓库，==每个仓库中又包含了多个镜像，每个镜像有不同的标签（tag）。== 
+> 仓库(Repository)和仓库注册服务器（Registry）是有区别的。仓库注册服务器上往往存放着多个仓库，**每个仓库中又包含了多个镜像，每个镜像有不同的标签（tag）。**
 >
 
 ## 基本操作
@@ -138,6 +138,12 @@ docker COMMAND --help # 帮助
 
 `docker images` 列出本地所有镜像
 
+- **REPOSITORY:**表示来自于哪个仓库。
+- **TAG:**表示镜像的标签信息，标签只是标记，并不能标识镜像内容。
+- **IMAGE ID:**镜像ID，镜像的唯一标识，如果两个镜像ID相同，则说明它们实际上指向了同一个镜像，只是具有不同标签名而已。
+- **CREATED:**表示镜像最后的更新时间。
+- **SIZE:**表示镜像大小，好的镜像往往体积会较小。
+
 `docker pull [选项] [docker 镜像地址:标签]` 拉取镜像 docker pull mysql:5.7 
 
 `docker rmi -f 镜像id` 删除单个镜像
@@ -170,7 +176,7 @@ docker COMMAND --help # 帮助
 >
 > bash：放在镜像名后的是 **命令**，这里我们希望有个交互式 Shell，因此用的是 bash。 
 >
-> ==养成使用--name来指定容器名称和镜像写完整带tag的习惯。==
+> **养成使用--name来指定容器名称和镜像写完整带tag的习惯。**
 
 `docker run --name myubuntu -itd ubuntu:18.04 bash` 创建myubuntu容器，并且后台运行（单纯使用-d不可以，必须使用-itd）。
 
@@ -206,7 +212,11 @@ docker COMMAND --help # 帮助
 
 `docker inspect 容器id /镜像id`
 
-#### ==进入正在运行的容器==
+#### 查看容器内部进程
+
+`docker top 容器id` 
+
+#### 进入正在运行的容器
 
 `docker exec -it 容器id /bin/bash` 
 
