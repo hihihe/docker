@@ -23,7 +23,7 @@ docker run hello-world
 **如果机器有支持深度学习的GPU，新版docker可安装 Nvidia 对 docker 的软件支持[目前仅支持linux]：**
 
 ```bash
-distribution=$(. /etc/os-release;echo $ID$VERSION_ID)
+distribution=(./etc/os−release;echo(. /etc/os-release;echo ID$VERSION_ID)
 curl -s -L https://nvidia.github.io/nvidia-docker/gpgkey | sudo apt-key add -
 curl -s -L https://nvidia.github.io/nvidia-docker/$distribution/nvidia-docker.list | sudo tee /etc/apt/sources.list.d/nvidia-docker.list
 
@@ -38,7 +38,7 @@ sudo systemctl restart docker
 
 ### 检验GPU是否可以使用
 
-`docker run --gpus all --it nvidia/cuda:10.2-cudnn8-runtime-ubuntu18.04`
+`docker run --gpus all -it nvidia/cuda:10.2-cudnn8-runtime-ubuntu18.04`
 
 --gpus all 则是使用所有 gpu。
 
