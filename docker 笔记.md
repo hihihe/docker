@@ -1,40 +1,10 @@
-## 安装docker
+## 安装Docker
 
 **版本号别用latest，别用latest，别用latest。会埋坑。。。**
 
-[docker阿里安装教程](https://developer.aliyun.com/article/656764)
+[Docker安装](https://docs.docker.com/engine/install/)
 
-[docker hub](https://hub.docker.com/)  [docker docs](https://docs.docker.com/)  [docker安装](https://docs.docker.com/engine/install/centos/)
-
-![image-20220106113139350](https://chushi123.oss-cn-beijing.aliyuncs.com/img/202201111613089.png)
-
-### docker Linux通用安装
-
-```bash
-sudo curl -sS https://get.docker.com/ | sh
-```
-
-测试安装是否成功。
-
-```bash
-docker run hello-world
-```
-
-**如果机器有支持深度学习的GPU，新版docker可安装 Nvidia 对 docker 的软件支持[目前仅支持linux]：**
-
-```bash
-distribution=(./etc/os−release;echo(. /etc/os-release;echo ID$VERSION_ID)
-curl -s -L https://nvidia.github.io/nvidia-docker/gpgkey | sudo apt-key add -
-curl -s -L https://nvidia.github.io/nvidia-docker/$distribution/nvidia-docker.list | sudo tee /etc/apt/sources.list.d/nvidia-docker.list
-
-
-sudo apt-get update && sudo apt-get install -y nvidia-container-toolkit
-sudo systemctl restart docker
-```
-
-[官方安装教程](https://docs.nvidia.com/datacenter/cloud-native/container-toolkit/install-guide.html#docker)
-
-注意：以前是安装nvidia-container-toolkit，现在官方又回退到sudo apt-get install -y nvidia-docker2
+[安装GPU支持](https://docs.nvidia.com/datacenter/cloud-native/container-toolkit/latest/install-guide.html)
 
 ### 检验GPU是否可以使用
 
@@ -42,26 +12,11 @@ sudo systemctl restart docker
 
 --gpus all 则是使用所有 gpu。
 
-###  Docker的启动与停止
-systemctl命令是系统服务管理器指令，非root用户加sudo使用
-
-```bash
-systemctl start docker # 启动docker
-
-systemctl stop docker # 停止docker
-
-systemctl restart docker # 重启docker
-
-systemctl status docker # 查看docker状态
-
-systemctl enable docker # 开机启动
-
-docker info # 查看docker概要信息
-
-docker --help # 查看docker帮助文档
-```
-
 ## docker 架构
+
+
+
+![image-20240317092042096](https://chushi123.oss-cn-beijing.aliyuncs.com/img/202403170920220.png)
 
 镜像（image）：
 
@@ -86,9 +41,6 @@ docker --help # 查看docker帮助文档
 > 仓库（Repository）是集中存放镜像文件的场所。 
 >
 > 仓库(Repository)和仓库注册服务器（Registry）是有区别的。仓库注册服务器上往往存放着多个仓库，**每个仓库中又包含了多个镜像，每个镜像有不同的标签（tag）。**
->
-
-## 基本操作
 
 ### 配置阿里云镜像加速
 
@@ -98,33 +50,27 @@ docker --help # 查看docker帮助文档
 
 3、进入阿里云容器镜像服务，找到镜像加速器。可以看到配置镜像加速的方法
 
-#### windows系统配置镜像加速
+## 基本操作
 
-![image-20220105174217902](https://chushi123.oss-cn-beijing.aliyuncs.com/img/202201051742983.png)
+###  Docker的启动与停止
 
-```json
-{
-  "registry-mirrors": [
-    "https://docker.mirrors.ustc.edu.cn",
-    "http://hub-mirror.c.163.com",
-  ],
-  "insecure-registries": [],
-  "debug": false,
-  "experimental": false,
-  "features": {
-    "buildkit": true
-  },
-  "builder": {
-    "gc": {
-      "enabled": true,
-      "defaultKeepStorage": "20GB"
-    }
-  }
-}
+systemctl命令是系统服务管理器指令，非root用户加sudo使用
 
+```bash
+systemctl start docker # 启动docker
+
+systemctl stop docker # 停止docker
+
+systemctl restart docker # 重启docker
+
+systemctl status docker # 查看docker状态
+
+systemctl enable docker # 开机启动
+
+docker info # 查看docker概要信息
+
+docker --help # 查看docker帮助文档
 ```
-
-"registry-mirrors" 加速镜像源；"experimental" 是否开启试验性功能
 
 ### 基础命令
 
